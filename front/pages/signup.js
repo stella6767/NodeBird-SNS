@@ -13,28 +13,30 @@ const StyledErrorMessage = styled.div`
 
 const Signup = () => {
 
-  const[id,onChangeId] = useInput('');
-  const[nickName,onChangeNickname] = useInput('');
-  const[password,onChangePassword] = useInput('');
-
  const [passwordCheck, setPasswordCheck]= useState('');
+
+
+const [term,setTerm] = useState(false);
+const [termError,setTermError] = useState(false);
  const [passwordError, setPasswordError] = useState(false);
 
+
+ const[id,onChangeId] = useInput('');
+ const[nickName,onChangeNickname] = useInput('');
+ const[password,onChangePassword] = useInput('');
+
+
 const onChangePasswordCheck = useCallback((e)=>{
-  setPasswordCheck(e.target.value);
   setPasswordError(e.target.value !== password);
+  setPasswordCheck(e.target.value);
 },[password])
 
 
-const [term,setTerm] = useState('');
-const [termError,setTermError] = useState(false);
-
 const onChangeTerm = useCallback((e)=>{
   //console.log(e.target.checked);
-  setTerm(e.target.checked);
-  
   setTermError(false);
-},[]);
+  setTerm(e.target.checked);
+},[term]);
 
   const onSubmit= useCallback(()=>{
     if(password !== passwordCheck)  {
@@ -42,12 +44,12 @@ const onChangeTerm = useCallback((e)=>{
        return;
     }
     if(!term){
-      //console.log("term", term); //왜??????
+      console.log("대체 term 이 왜>>>", term); //왜??????
        setTermError(true);
        return;
     }
-    console.log(id,nickName,password);
-  },[password, passwordCheck,passwordError]);
+    console.log(id,nickName,password,passwordCheck, term);
+  },[password, passwordCheck,passwordError]); //여기에 term이 들어가야지만 작동된다... 이유를 알아보자... 함수 안에서 쓰이므로 넣어줘야 된다..
 
  
 useEffect(()=>{
