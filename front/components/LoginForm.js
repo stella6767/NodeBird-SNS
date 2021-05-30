@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { PropTypes } from 'prop-types';
 import useInput from "../hooks/useInput";
 import { useDispatch } from "react-redux";
-import { loginAction } from '../reducers/index';
+import { loginAction } from '../reducers/user';
 
 
 const StyledButtonWrapper = styled.div`
