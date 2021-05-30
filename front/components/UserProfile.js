@@ -1,11 +1,15 @@
 import React, { memo, useCallback } from "react";
 import { Card, Avatar,Button } from 'antd';
+import { useDispatch } from "react-redux";
+import { logoutAction } from "../reducers";
 
-const UserProfile = memo(({setIsLoggedIn}) => {  //props 꼭 {} 안에서 받아라..
+const UserProfile = memo(() => {  //props 꼭 {} 안에서 받아라..
+
+  const dispatch = useDispatch();
 
   const onLogOut = useCallback(()=>{
-    console.log(setIsLoggedIn)
-    setIsLoggedIn(false);
+    dispatch(logoutAction())
+    
   },[]);
 
   return <>

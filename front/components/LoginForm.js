@@ -4,6 +4,8 @@ import Link from "next/link";
 import styled from 'styled-components';
 import { PropTypes } from 'prop-types';
 import useInput from "../hooks/useInput";
+import { useDispatch } from "react-redux";
+import { loginAction } from '../reducers/index';
 
 
 const StyledButtonWrapper = styled.div`
@@ -17,7 +19,10 @@ const StyledFormWrapper = styled(Form)`
 
 
 
-const LoginForm = memo(({setIsLoggedIn}) => {
+const LoginForm = memo(() => {
+
+  const dispatch = useDispatch();
+
 
   const[id,onChangeId] = useInput('');
   const[password,onChangePassword] = useInput('');
@@ -36,7 +41,7 @@ const LoginForm = memo(({setIsLoggedIn}) => {
   const onSubmitForm = useCallback((e) =>{
 
     console.log(id,password);
-    setIsLoggedIn(true);
+    dispatch(loginAction({id,password}));
   },[id,password]);
 
   return (

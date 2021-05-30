@@ -29,14 +29,14 @@ const [termError,setTermError] = useState(false);
 const onChangePasswordCheck = useCallback((e)=>{
   setPasswordError(e.target.value !== password);
   setPasswordCheck(e.target.value);
-},[password])
+},[passwordError,passwordCheck])
 
 
 const onChangeTerm = useCallback((e)=>{
   //console.log(e.target.checked);
   setTermError(false);
   setTerm(e.target.checked);
-},[term]);
+},[term,termError]);
 
   const onSubmit= useCallback(()=>{
     if(password !== passwordCheck)  {
@@ -49,7 +49,7 @@ const onChangeTerm = useCallback((e)=>{
        return;
     }
     console.log(id,nickName,password,passwordCheck, term);
-  },[password, passwordCheck,passwordError]); //여기에 term이 들어가야지만 작동된다... 이유를 알아보자... 함수 안에서 쓰이므로 넣어줘야 된다..
+  },[password, passwordCheck,passwordError, termError, term]); //여기에 term이 들어가야지만 작동된다... 이유를 알아보자... 함수 안에서 쓰이므로 넣어줘야 된다..
 
  
 useEffect(()=>{
