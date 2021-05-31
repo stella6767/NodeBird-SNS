@@ -8,9 +8,10 @@ export const Global = createGlobalStyle`
   .ant-card-cover { //에러 해결
     transform: none !important;
   }
-`
+`;
 
-export const Overlay = styled.div` //알아서 클래스명을 겹치지 않게 바꿈.
+export const Overlay = styled.div`
+  //알아서 클래스명을 겹치지 않게 바꿈.
   position: fixed;
   z-index: 5000;
   top: 0;
@@ -25,7 +26,7 @@ export const Header = styled.header`
   position: relative;
   padding: 0;
   text-align: center;
-  
+
   & h1 {
     margin: 0;
     font-size: 17px;
@@ -50,7 +51,8 @@ export const CloseBtn = styled(CloseOutlined)`
 
 export const Indicator = styled.div`
   text-align: center;
-  
+  z-index: 3;
+
   & > div {
     width: 75px;
     height: 30px;
@@ -67,9 +69,9 @@ export const Indicator = styled.div`
 export const ImgWrapper = styled.div`
   padding: 32px;
   text-align: center;
-  
+
   & img {
     margin: 0 auto;
     max-height: 750px;
   }
-`; 
+`;

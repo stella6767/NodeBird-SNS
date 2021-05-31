@@ -6,17 +6,34 @@ export const initialState = {
 }
 
 
-export const loginAction = (data) =>{
+export const loginRequestAction = (data) =>{
     return{
-        type: 'LOG_IN',
+        type: 'LOG_IN_REQUEST',
         data,
     }
 };
 
-
-export const logoutAction = () =>{
+export const loginRequestSuccess = () =>{
     return{
-        type: 'LOG_OUT',
+        type: 'LOG_IN_REQUEST',
+    }
+};
+
+
+export const loginRequestFailure = () =>{
+    return{
+        type: 'LOG_IN_REQUEST',
+    }
+};
+
+
+
+///ㅌ
+
+
+export const logoutRequestAction = () =>{
+    return{
+        type: 'LOG_OUT_REQUEST',
     }
 };
 
