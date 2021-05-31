@@ -2,6 +2,9 @@
 import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { PlusOutlined } from '@ant-design/icons';
+import ImagesZoom from './ImagesZoom';
+//폴더를 import 하면 자동으로 index 파일이 불러오짐 
+
 
 const PostImages = ({images}) => {
 
@@ -50,7 +53,8 @@ const PostImages = ({images}) => {
           개의 사진 더보기
         </div>
       </div>
-      {/* {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />} */}
+      {/* 확대해서 볼 수 있게끔 */}
+      {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
     </>
   );
 }
