@@ -15,10 +15,9 @@ const ImagesZoom = ({ images, onClose }) => {
       </Header>
       <SlickWrapper>
         <div>
-          
           <Slick
             initialSlide={0}
-            afterChange={(slide) => setCurrentSlide(slide)}
+            beforeChange={(slide, newSlide) => setCurrentSlide(newSlide)}
             infinite
             arrows={false}
             slidesToShow={1}
@@ -32,10 +31,7 @@ const ImagesZoom = ({ images, onClose }) => {
           </Slick>
           <Indicator>
             <div>
-              {currentSlide + 1}
-              {' '}
-              /
-              {images.length}
+              {currentSlide + 1} /{images.length}
             </div>
           </Indicator>
         </div>
@@ -45,10 +41,12 @@ const ImagesZoom = ({ images, onClose }) => {
 };
 
 ImagesZoom.propTypes = {
-  images: PropTypes.arrayOf(PropTypes.shape({
-    src: PropTypes.string,
-  })).isRequired,
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      src: PropTypes.string,
+    }),
+  ).isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
-export default ImagesZoom; 
+export default ImagesZoom;

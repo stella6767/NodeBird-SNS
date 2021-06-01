@@ -1,47 +1,154 @@
-import { all, delay, fork, put, takeEvery, takeLatest } from 'redux-saga/effects';
-import { LOG_IN_FAILURE, LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_OUT_REQUEST } from '../reducers/user';
+import { all, delay, fork, put, takeLatest } from 'redux-saga/effects';
+import axios from 'axios';
 
-// function loginAPI(data, a, b, c) {
-//   //제너레이터 아님
-//   return axios.post('/api/login', data);
-// }
+import {
+  FOLLOW_FAILURE,
+  FOLLOW_REQUEST,
+  FOLLOW_SUCCESS,
+  LOG_IN_FAILURE,
+  LOG_IN_REQUEST,
+  LOG_IN_SUCCESS,
+  LOG_OUT_FAILURE,
+  LOG_OUT_REQUEST,
+  LOG_OUT_SUCCESS,
+  SIGN_UP_FAILURE,
+  SIGN_UP_REQUEST,
+  SIGN_UP_SUCCESS,
+  UNFOLLOW_FAILURE,
+  UNFOLLOW_REQUEST,
+  UNFOLLOW_SUCCESS,
+} from '../reducers/user';
 
-function* watchLogin() {
-  console.log('사가 가 실행되는 것은 맞는데..');
-  yield takeLatest(LOG_IN_REQUEST, logIn); //로그인이라는 액션이 실행될 때까지 기다리겠다. 액션이 실행되면 login함수 실행, 이벤트 리스너 같은 역할
+function logInAPI(data) {
+  return axios.post('/api/login', data);
 }
 
-function* watchLogOut() {
-  yield takeLatest(LOG_OUT_REQUEST); //take의 치명적인 단점은 1회용.. 1번 밖에 안 받음.. 해결은. while로 true로 감싸거나, 아니면 takeEvery.
-} //takeEvery 에서 마지막 것만 실행시키는 게 takeLatest(보통은 이거), 첫번쨰 것만 받고싶으면 takeleading
-
-//call은 동기함수 호출, fork 는 비동기함수 호출(요청 보내버리고 바로 다음 거 실행, 블락킹을 안 함.)
 function* logIn(action) {
   try {
-    //명시되어있지 않아도 login이라는 함수에 action 객체가 넘어온 거임. call은 특이하게, 인자를 펼처서 보내줌. 첫번째 자리가 함수고, 나머지 자리는 매개변수
-    //const result = yield call(loginAPI, action.data, a, b, c); //loginAPI의 결과값을 받아서 이펙트 앞에서 call, then(결과값)을 받기 위해서 call(동기) 써주셈!
-
-    console.log('사가 로그인 ');
-
-    yield delay(1000); //현재 서버가 없기 때문에 가짜로,
+    console.log('saga logIn');
+    // const result = yield call(logInAPI);
+    yield delay(1000);
     yield put({
-      //put은 디스패치라고 생각하면 된다. 액션을 실행
       type: LOG_IN_SUCCESS,
       data: action.data,
     });
-  } catch (e) {
-    console.log('why', e);
+  } catch (err) {
+    console.error(err);
     yield put({
-      //테스트할 때 편하게 하기 위해서 yield 꼭 붙어줘야 됨. next()로 실제로 하나하나 돌려보면서..
       type: LOG_IN_FAILURE,
-      data: e.response.data,
+      error: err.response.data,
     });
   }
 }
 
+function logOutAPI() {
+  return axios.post('/api/logout');
+}
+
+function* logOut() {
+  try {
+    // const result = yield call(logOutAPI);
+    yield delay(1000);
+    yield put({
+      type: LOG_OUT_SUCCESS,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOG_OUT_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function signUpAPI() {
+  return axios.post('/api/signUp');
+}
+
+function* signUp() {
+  try {
+    // const result = yield call(signUpAPI);
+    yield delay(1000);
+    yield put({
+      type: SIGN_UP_SUCCESS,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: SIGN_UP_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function followAPI() {
+  return axios.post('/api/follow');
+}
+
+function* follow(action) {
+  try {
+    // const result = yield call(followAPI);
+    yield delay(1000);
+    yield put({
+      type: FOLLOW_SUCCESS,
+      data: action.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: FOLLOW_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function unfollowAPI() {
+  return axios.post('/api/unfollow');
+}
+
+function* unfollow(action) {
+  try {
+    // const result = yield call(unfollowAPI);
+    yield delay(1000);
+    yield put({
+      type: UNFOLLOW_SUCCESS,
+      data: action.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: UNFOLLOW_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function* watchFollow() {
+  yield takeLatest(FOLLOW_REQUEST, follow);
+}
+
+function* watchUnfollow() {
+  yield takeLatest(UNFOLLOW_REQUEST, unfollow);
+}
+
+function* watchLogIn() {
+  yield takeLatest(LOG_IN_REQUEST, logIn);
+}
+
+function* watchLogOut() {
+  yield takeLatest(LOG_OUT_REQUEST, logOut);
+}
+
+function* watchSignUp() {
+  yield takeLatest(SIGN_UP_REQUEST, signUp);
+}
+
 export default function* userSaga() {
   yield all([
-    fork(watchLogin), //fork 는 함수를 실행해줌 call이랑 좀 다름
-    //fork(watchLogOut),
+    fork(watchFollow),
+    fork(watchUnfollow),
+    fork(watchLogIn),
+    fork(watchLogOut),
+    fork(watchSignUp),
   ]);
 }

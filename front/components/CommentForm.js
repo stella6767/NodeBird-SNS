@@ -1,34 +1,48 @@
-import React, { useCallback } from 'react';
-import { Form, Input, Button } from 'antd';
+import { Button, Form, Input } from 'antd';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import useInput from '../hooks/useInput';
+import { ADD_COMMENT_REQUEST } from '../reducers/post';
 
-export const CommentForm = ({ post }) => {
-    const id = useSelector((state) => state.user.me?.id);
-    const [commentText, onChangeCommentText] = useInput('');
-    const onSubmitComment = useCallback(() => {
-        console.log(`안 나오는디...  ${post.id}  와  ${commentText}`);
-    }, [commentText, id]);
+const CommentForm = ({ post }) => {
+  const dispatch = useDispatch();
+  const { addCommentDone, addCommentLoading } = useSelector((state) => state.post);
+  const id = useSelector((state) => state.user.me?.id);
+  const [commentText, onChangeCommentText, setCommentText] = useInput('');
 
-   useEffect(()=>{
-    console.log('인라인 스타일링 하니 form tag가 작동을 안 하네 도화지가 가려져서 그런가..');
-   },[]);
+  useEffect(() => {
+    if (addCommentDone) {
+      setCommentText('');
+    }
+  }, [addCommentDone]);
 
-    return (
-        <Form onFinish={onSubmitComment}> 
-            <Form.Item style={{ position: 'relative', margin: 0 }}>
-                <Input.TextArea value={commentText} onChange={onChangeCommentText} rows={4} />
-                {/* zIndex를 주니 작동... */}
-                <Button style={{ position: 'absolute', right: 0, bottom: -40, zIndex: 1}} type="primary" htmlType="submit">삐약</Button> 
-            </Form.Item>
-        </Form>
-    )
+  const onSubmitComment = useCallback(() => {
+    dispatch({
+      type: ADD_COMMENT_REQUEST,
+      data: { content: commentText, userId: id, postId: post.id },
+    });
+  }, [commentText, id]);
+
+  return (
+    <Form onFinish={onSubmitComment}>
+      <Form.Item style={{ position: 'relative', margin: 0 }}>
+        <Input.TextArea rows={4} value={commentText} onChange={onChangeCommentText} />
+        <Button
+          style={{ position: 'absolute', right: 0, bottom: -40 }}
+          type="primary"
+          htmlType="submit"
+          loading={addCommentLoading}
+        >삐약
+        </Button>
+      </Form.Item>
+    </Form>
+  );
 };
 
 CommentForm.propTypes = {
-    post: PropTypes.object.isRequired,
+  post: PropTypes.object.isRequired,
 };
 
-export default CommentForm; 
+export default CommentForm;
