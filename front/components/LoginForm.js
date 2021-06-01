@@ -1,31 +1,27 @@
-import { Button, Form, Input } from "antd";
-import React, { memo, useCallback, useState } from "react";
-import Link from "next/link";
+import { Button, Form, Input } from 'antd';
+import React, { memo, useCallback, useState } from 'react';
+import Link from 'next/link';
 import styled from 'styled-components';
 import { PropTypes } from 'prop-types';
-import useInput from "../hooks/useInput";
-import { useDispatch } from "react-redux";
-import { loginAction } from '../reducers/user';
-
+import useInput from '../hooks/useInput';
+import { useDispatch } from 'react-redux';
+import { loginRequestAction } from '../reducers/user';
+import { useSelector } from 'react-redux';
 
 const StyledButtonWrapper = styled.div`
- margin-top: 10px;
+  margin-top: 10px;
 `;
 
 const StyledFormWrapper = styled(Form)`
-    padding: 10px;
-
+  padding: 10px;
 `;
 
-
-
 const LoginForm = memo(() => {
-
   const dispatch = useDispatch();
+  const { isLoggingIn } = useSelector((state) => state.user);
 
-
-  const[id,onChangeId] = useInput('');
-  const[password,onChangePassword] = useInput('');
+  const [id, onChangeId] = useInput('');
+  const [password, onChangePassword] = useInput('');
 
   // const [id, setId] = useState("");
   // const onChangeId = useCallback((e) => {
@@ -38,11 +34,13 @@ const LoginForm = memo(() => {
   //   setPassword(e.target.value);
   // }, []);
 
-  const onSubmitForm = useCallback((e) =>{
-
-    console.log(id,password);
-    dispatch(loginAction({id,password}));
-  },[id,password]);
+  const onSubmitForm = useCallback(
+    (e) => {
+      console.log(id, password);
+      dispatch(loginRequestAction({ id, password }));
+    },
+    [id, password],
+  );
 
   return (
     <>
@@ -65,24 +63,22 @@ const LoginForm = memo(() => {
           />
         </div>
         <StyledButtonWrapper>
-          <Button type="primary" htmlType="submit" loading={false}>
+          <Button type="primary" htmlType="submit" loading={isLoggingIn}>
             로그인
           </Button>
-          <Link href ="/signup">
+          <Link href="/signup">
             <a>
               <Button>회원가입</Button>
             </a>
           </Link>
         </StyledButtonWrapper>
-
       </StyledFormWrapper>
     </>
   );
 });
 
-
 LoginForm.prototype = {
   setIsLoggedIn: PropTypes.func.isRequired,
-}
+};
 
 export default LoginForm;
