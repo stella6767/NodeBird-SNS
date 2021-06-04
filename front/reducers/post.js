@@ -88,7 +88,7 @@ const dummyComment = (data) => ({
   id: shortId.generate(),
   content: data,
   User: {
-    id: 1,
+    id: 1, //여기서 넣어주었는데?
     nickname: '제로초',
   },
 });

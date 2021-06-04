@@ -16,13 +16,6 @@ const CardWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
-useEffect(()=>{
-  console.log("me: ", me);
-  console.log("id: ", id);
-
-},[]);
-
-
 const PostCard = ({ post }) => {
   const dispatch = useDispatch();
   const { removePostLoading } = useSelector((state) => state.post);
@@ -46,6 +39,12 @@ const PostCard = ({ post }) => {
     });
   }, []);
 
+  // useEffect(() => {
+  //   console.log("id: ", id);
+  //   console.log("post: ", post.User.id);
+  // }, []);
+
+
   return (
     <CardWrapper key={post.id}>
       <Card
@@ -60,7 +59,7 @@ const PostCard = ({ post }) => {
             key="ellipsis"
             content={(
               <Button.Group>
-                {id && post.UserId === id
+                {id && post.User.id === id
                   ? (
                     <>
                       <Button>수정</Button>
